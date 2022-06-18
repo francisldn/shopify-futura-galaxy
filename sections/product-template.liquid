@@ -135,8 +135,20 @@
       <div class="product-single__meta">
 
         <h1 class="product-single__title">{{ product.title }}</h1>
-        <div>⭐ ⭐ ⭐ ⭐ ⭐</div>
-        <script>window.performance.mark('debut:product:title_visible');</script>
+
+        {% assign affiliate = false %}
+        {% for tag in product.tags %}
+          {% if tag contains 'affiliate' %}
+            {% assign affiliate = true %}
+            {% assign affiliate_link = tag | replace: "affiliate_" , "" %}
+          {% endif %}
+        {% endfor %}
+
+        {% if affiliate == true %}
+          <button class="btn product-form__cart-submit" style="text-transform:uppercase; margin-top:2rem;"><a href="{{ affiliate_link }}" target="_blank" style="text-decoration:none; color:white;">See on Amazon</a></button>
+        {% else %}
+          <div>⭐ ⭐ ⭐ ⭐ ⭐</div>
+          <script>window.performance.mark('debut:product:title_visible');</script>
           <div class="product__price">
             {% include 'product-price', variant: current_variant, show_vendor: section.settings.show_vendor %}
           </div>
@@ -217,68 +229,76 @@
                 {%- if section.settings.enable_payment_button %} product-form__item--payment-button {%- endif -%}
                 {%- if product.has_only_default_variant %} product-form__item--no-variants {%- endif -%}"
               >
-                <button type="submit" name="add"
-                  {% unless current_variant.available %} aria-disabled="true"{% endunless %}
-                  aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
-                  class="btn product-form__cart-submit{% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
-                  {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
-                  data-add-to-cart>
-                  <span data-add-to-cart-text>
-                    {% unless current_variant.available %}
-                      {{ 'products.product.sold_out' | t }}
-                    {% else %}
-                      {{ 'products.product.add_to_cart' | t }}
-                    {% endunless %}
-                  </span>
-                  <span class="hide" data-loader>
-                    {% include 'icon-spinner' %}
-                  </span>
-                </button>
+                {% comment %} start of 'add to cart' and 'buy now' {% endcomment %}
+                
+                  <button type="submit" name="add"
+                    {% unless current_variant.available %} aria-disabled="true"{% endunless %}
+                    aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
+                    class="btn product-form__cart-submit
+                    {% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}
+                    {% if affiliate == true %} hide {% endif %}"
+                    {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
+                    data-add-to-cart
+                  >
+                    <span data-add-to-cart-text>
+                      {% unless current_variant.available %}
+                        {{ 'products.product.sold_out' | t }}
+                      {% else %}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {% endunless %}
+                    </span>
+                    <span class="hide" data-loader>
+                      {% include 'icon-spinner' %}
+                    </span>
+                  </button>
                 {% if section.settings.enable_payment_button %}
                   {{ form | payment_button }}
                 {% endif %}
+                {% comment %} end  of 'add to cart and buy now' {% endcomment %}
               </div>
             </div>
           {% endform %}
-        </div>
-
-        {%- comment -%}
-          Live region for announcing updated price and availability to screen readers
-        {%- endcomment -%}
-        <p class="visually-hidden" data-product-status
-          aria-live="polite"
-          role="status"
-        ></p>
-
-        {%- comment -%}
-          Live region for announcing that the product form has been submitted and the
-          product is in the process being added to the cart
-        {%- endcomment -%}
-        <p class="visually-hidden" data-loader-status
-          aria-live="assertive"
-          role="alert"
-          aria-hidden="true"
-        >{{ 'products.product.loader_label' | t }}</p>
-
-        <div
-          class="product-single__store-availability-container"
-          data-store-availability-container
-          data-product-title="{{ product.title | escape }}"
-          data-has-only-default-variant="{{ product.has_only_default_variant }}"
-          data-base-url="{{ shop.url }}{{ routes.root_url }}"
-        >
-        </div>
-
-        <div class="product-single__description rte">
-          {{ product.description }}
-        </div>
-
-        {% if section.settings.show_share_buttons %}
-          {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
         {% endif %}
-    </div>
+        </div>
+
+            {%- comment -%}
+              Live region for announcing updated price and availability to screen readers
+            {%- endcomment -%}
+            <p class="visually-hidden" data-product-status
+              aria-live="polite"
+              role="status"
+            ></p>
+
+            {%- comment -%}
+              Live region for announcing that the product form has been submitted and the
+              product is in the process being added to the cart
+            {%- endcomment -%}
+            <p class="visually-hidden" data-loader-status
+              aria-live="assertive"
+              role="alert"
+              aria-hidden="true"
+            >{{ 'products.product.loader_label' | t }}</p>
+
+            <div
+              class="product-single__store-availability-container"
+              data-store-availability-container
+              data-product-title="{{ product.title | escape }}"
+              data-has-only-default-variant="{{ product.has_only_default_variant }}"
+              data-base-url="{{ shop.url }}{{ routes.root_url }}"
+            >
+            </div>
+
+            <div class="product-single__description rte">
+              {{ product.description }}
+            </div>
+
+            {% if section.settings.show_share_buttons %}
+              {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
+            {% endif %}
+            </div>
+          
+          </div>
   </div>
-</div>
 
 {% unless product == empty %}
   <script type="application/json" id="ProductJson-{{ section.id }}">
