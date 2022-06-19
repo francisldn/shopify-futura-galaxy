@@ -1,0 +1,18 @@
+{% if section.settings.isOrderNumberEnabled == true %}
+<label for="ContactForm-orderNumber">Order Number</label>
+<input type="text" id="ContactForm-orderNumber" inputmode="numeric" name="contact[ordernumber]"/>
+ {% endif %}
+
+{% schema %}
+{
+    "name": "Order Number",
+    "settings": [
+        {
+            "type": "checkbox",
+            "label": "Order Number",
+            "id": "isOrderNumberEnabled"
+        }
+    ]
+}
+{% endschema %}
+
