@@ -1,4 +1,6 @@
-<div style="text-align:center" class="h3">Instagram</div>
+{% if section.settings.title != blank %}
+  <div class="h3 text-center">{{ section.settings.title }}</div>
+{% endif %}
 <div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }}">
   {% case section.blocks.size %}
     {% when 1 %}
@@ -90,6 +92,11 @@
   "class": "index-section index-section--flush",
   "max_blocks": 4,
   "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Gallery Title"
+    },
     {
       "type": "select",
       "id": "section_height",
@@ -547,12 +554,10 @@
         },
         {
           "type": "image"
-        },
-        {
-          "type": "image"
         }
       ]
     }
   ]
 }
 {% endschema %}
+
