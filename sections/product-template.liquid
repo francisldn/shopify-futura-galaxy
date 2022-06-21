@@ -147,7 +147,9 @@
         {% if affiliate == true %}
           <button class="btn product-form__cart-submit" style="text-transform:uppercase; margin-top:2rem;"><a href="{{ affiliate_link }}" target="_blank" style="text-decoration:none; color:white;">See on Amazon</a></button>
         {% else %}
-          <div>⭐ ⭐ ⭐ ⭐ ⭐</div>
+          <div>
+            {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: false, product: product %}
+          </div>
           <script>window.performance.mark('debut:product:title_visible');</script>
           <div class="product__price">
             {% include 'product-price', variant: current_variant, show_vendor: section.settings.show_vendor %}
@@ -296,7 +298,9 @@
               {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
             {% endif %}
             </div>
-          
+          <div>
+            {% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: false, product: product %}
+          </div>
           </div>
   </div>
 
