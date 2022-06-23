@@ -145,7 +145,7 @@
         {% endfor %}
 
         {% if affiliate == true %}
-          <button class="btn product-form__cart-submit" style="text-transform:uppercase; margin-top:2rem;"><a href="{{ affiliate_link }}" target="_blank" style="text-decoration:none; color:white;">See on Amazon</a></button>
+          <button class="btn product-form__cart-submit" style="text-transform:uppercase; margin:2rem 0;"><a href="{{ affiliate_link }}" target="_blank" style="text-decoration:none; color:white;">See on Amazon</a></button>
         {% else %}
           <div>
             {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: false, product: product %}
@@ -289,11 +289,28 @@
               data-base-url="{{ shop.url }}{{ routes.root_url }}"
             >
             </div>
-
+            <div class="product-detail-container">
+              <div class="product-details">
+                <div class="product-toggle-description">Description</div>
+                <div class="product-toggle-details">Details</div>
+                <div class="product-toggle-shipping">Shipping</div>
+              </div>
+              <div class="horizontal-line"></div>
+            </div>
             <div class="product-single__description rte">
               {{ product.description }}
             </div>
-
+           <div class="product-single__details">
+              <table>
+                <tr><td>Package Dimensions</td><td id="package">{{product.metafields.details.package-dimension-us}}</td></tr>
+                <tr><td>Voltage</td><td id="voltage">{{ product.metafields.details.voltage-us }}</td></tr>
+                <tr><td>Frequency</td><td id="frequency">{{ product.metafields.details.frequency-us }}</td></tr>
+                <tr><td>Wattage</td><td id="wattage">{{product.metafields.details.wattage }}</td></tr>
+              </table>
+            </div>
+            <div class="product-single__shipping">
+              {{ product.metafields.text.shipping }}
+            </div>
             {% if section.settings.show_share_buttons %}
               {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
             {% endif %}
@@ -313,6 +330,87 @@
   </script>
 {% endunless %}
 
+<style>
+  .product-details {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .horizontal-line {
+    margin-top: 1rem;
+    border-top: gray solid 1px;
+  }
+
+  .product-toggle-description, .product-toggle-details, .product-toggle-shipping {
+    cursor: pointer;
+  }
+
+  .product-toggle-shipping:hover {
+    color: #00008B;
+    text-decoration: underline;
+  }
+
+  .product-single__details {
+    display: none;
+    margin: 2rem 0;
+  }
+
+  .product-single__shipping {
+    display: none;
+    margin: 2rem 0;
+  }
+
+
+
+</style>
+
+<script>
+
+  $('.product-toggle-description').on('click', () => {
+    $('.product-single__description').css("display","block")
+    $('.product-toggle-description').css('text-decoration','underline','color','#00008B')
+    $('.product-single__details').css("display","none")
+    $('.product-toggle-details').css('text-decoration','none','color','inherit')
+    $('.product-single__shipping').css("display","none")
+    $('.product-toggle-shipping').css('text-decoration','none','color','inherit')
+  })
+  
+  $('.product-toggle-details').on('click', () => {
+    $('.product-single__description').css("display","none")
+    $('.product-toggle-description').css('text-decoration','none','color','inherit')
+    $('.product-single__details').css("display","block")
+    $('.product-toggle-details').css('text-decoration','underline','color','#00008B')
+    $('.product-single__shipping').css("display","none")
+    $('.product-toggle-shipping').css('text-decoration','none','color','inherit')
+  })
+
+  $('.product-toggle-shipping').on('click', () => {
+    $('.product-single__description').css("display","none")
+    $('.product-toggle-description').css('text-decoration','none','color','inherit')
+    $('.product-single__details').css("display","none")
+    $('.product-toggle-details').css('text-decoration','none','color','inherit')
+    $('.product-single__shipping').css("display","block")
+    $('.product-toggle-shipping').css('text-decoration','underline','color','#00008B')
+  })
+ 
+  $('#SingleOptionSelector-1').on('change', ()=> {
+    var plugType = $('#SingleOptionSelector-1').val().toLowerCase();
+    if (plugType === 'europe') {
+      $('#package').text('{{ product.metafields.details.package-dimension-europe }}')
+      $('#voltage').text('{{ product.metafields.details.voltage-europe }}')
+      $('#frequency').text('{{ product.metafields.details.frequency-europe }}')
+      $('#wattage').text('{{ product.metafields.details.wattage }}')
+    } else if ( plugType === 'us') {
+      $('#package').text('{{ product.metafields.details.package-dimension-us }}')
+      $('#voltage').text('{{ product.metafields.details.voltage-us }}')
+      $('#frequency').text('{{ product.metafields.details.frequency-us }}')
+      $('#wattage').text('{{ product.metafields.details.wattage }}')
+    }
+  })
+  
+  
+
+</script>
 
 
 {% schema %}
