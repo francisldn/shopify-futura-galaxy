@@ -1,0 +1,84 @@
+
+
+    {% for block in section.blocks %}
+    {% assign odd_even = forloop.index | modulo: 2 %}
+    
+    <div class="section-container {% if odd_even == 0 %} section-image-row-reverse {% endif %}">
+        {% if block.settings.image != blank %}
+        <div class="section-image">
+            {{ block.settings.image | image_url: width: 300 | image_tag }}
+        </div>
+        {% endif %}
+        <div class="section-title">
+            <h4>{{ block.settings.title }}</h4>
+            <p class="section-paragraph">
+                {{ block.settings.paragraph }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+
+    <style>
+        .section-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+
+        }
+
+        .section-image-row-reverse {
+            flex-direction: row-reverse;
+        }
+        .section-image {
+            min-width: 300px;
+            margin: auto;
+        }
+
+        .section-title {
+            margin: auto 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .section-container {
+                flex-direction: column;
+            }
+           
+        }
+
+    
+    </style>
+    
+    {% schema %}
+    {
+        "name": "Section",
+        "settings": [],
+        "blocks": [
+            {
+                "type": "section-paragraph",
+                "name": "section",
+                "settings": [
+                    {
+                        "type": "text",
+                        "label": "title (internal only)",
+                        "id": "title-internal"
+                    },
+                    {
+                        "type": "text",
+                        "label": "section title",
+                        "id": "title"
+                    },
+                    {
+                        "type": "text",
+                        "label": "paragraph",
+                        "id": "paragraph"
+                    },
+                    {
+                        "type": "image_picker",
+                        "label": "section image",
+                        "id": "image"
+                    }
+                ]
+            }
+        ]
+    }
+    {% endschema %} 
