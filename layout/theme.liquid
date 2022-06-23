@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}">
+{% render 'judgeme_core' %}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -86,6 +87,8 @@
   </style>
 
   <script>
+    
+    
     {%- if settings.currency_code_enabled -%}
       const moneyFormat = {{ shop.money_with_currency_format | json }}
     {%- else -%}
@@ -191,6 +194,8 @@
   </script>
 
   {{ content_for_header }}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body class="template-{{ request.page_type | handle }}">
