@@ -30,4 +30,3 @@ https://star-galaxo.myshopify.com/
 
 <img src="wholesale.jpg" alt="wholesale">
 
-<img src="faq.jpg" alt="faq">
