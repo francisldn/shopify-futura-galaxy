@@ -1,4 +1,4 @@
-**Star Galaxo LED Galaxy Box**
+**Futura Galaxy LED Galaxy Box**
 
 This is a single product Shopify store to display the LED Galaxy Box product, with the addition of an Amazon affiliated link for a related product.
 
@@ -18,7 +18,7 @@ Tech stacks:
 
 password to access the store: nopassword
 
-https://star-galaxo.myshopify.com/
+https://futura-galaxy.myshopify.com/
 
 <img src="homepage.jpg" alt="homepage">
 
