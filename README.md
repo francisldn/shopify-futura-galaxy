@@ -20,9 +20,7 @@ password to access the store: nopassword
 
 https://futura-galaxy.myshopify.com/
 
-<img src="homepage.jpg" alt="homepage">
-
-<img src="content.jpg" alt="content">
+<img src="homepage.jpg" alt="homepage"> 
 
 <img src="product.jpg" alt="product">
 
